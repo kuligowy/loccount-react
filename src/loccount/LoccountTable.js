@@ -8,9 +8,6 @@ import {
   TableRow,
   TableRowColumn
 } from "material-ui/Table";
-import TextField from "material-ui/TextField";
-import Toggle from "material-ui/Toggle";
-import LoccountEntry from "./LoccountEntry";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 const styles = {
@@ -28,7 +25,7 @@ export default class LoccountTable extends React.Component {
   state = {
     fixedHeader: true,
     fixedFooter: true,
-    stripedRows: false,
+    stripedRows: true,
     showRowHover: false,
     selectable: true,
     multiSelectable: false,
@@ -88,21 +85,17 @@ export default class LoccountTable extends React.Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.loccountEntries.data.data ? (
-              this.props.loccountEntries.data.data.map((row, index) => (
-                <TableRow key={index}>
-                  <TableRowColumn>{index}</TableRowColumn>
-                  <TableRowColumn>{row.loccount}</TableRowColumn>
-                  <TableRowColumn>{row.lp}</TableRowColumn>
-                  <TableRowColumn>{row.title}</TableRowColumn>
-                  <TableRowColumn>{row.txDate}</TableRowColumn>
-                  <TableRowColumn>{row.amount}</TableRowColumn>
-                  <TableRowColumn>{row.difference}</TableRowColumn>
-                </TableRow>
-              ))
-            ) : (
-              <span />
-            )}
+            {this.props.loccountEntries.data.data.map((row, index) => (
+              <TableRow key={index}>
+                <TableRowColumn>{index}</TableRowColumn>
+                <TableRowColumn>{row.loccount}</TableRowColumn>
+                <TableRowColumn>{row.lp}</TableRowColumn>
+                <TableRowColumn>{row.title}</TableRowColumn>
+                <TableRowColumn>{row.txDate}</TableRowColumn>
+                <TableRowColumn>{row.amount}</TableRowColumn>
+                <TableRowColumn>{row.difference}</TableRowColumn>
+              </TableRow>
+            ))}
           </TableBody>
           <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
             <TableRow>

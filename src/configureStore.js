@@ -8,7 +8,7 @@ const loggerMiddleware = createLogger();
 export default function configureStore(preloadedState) {
   return createStore(
     loccountApp,
-    preloadedState,
+    //preloadedState,
     applyMiddleware(thunkMiddleware, loggerMiddleware)
   );
 }
