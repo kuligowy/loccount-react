@@ -17,27 +17,16 @@ export default class LoccountFilter extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
         <span>
           {this.props.loccounts.data.map((loccount, idx) => (
             <Checkbox
               key={idx}
               label={loccount._id}
               style={styles.checkbox}
-              onCheck={this.props.onClick(loccount)}
+              onCheck={(e,isInputChecked)=> this.props.onClick(e,isInputChecked,loccount._id)}
             />
           ))}
         </span>
-      </MuiThemeProvider>
     );
   }
 }
-//onCheck={this.updateCheck.bind(this)}
-//
-// <Checkbox
-//   name="group1"
-//   type="checkbox"
-//   value={loccount._id}
-//   label={loccount._id}
-//   onClick={this.props.onClick}
-// />

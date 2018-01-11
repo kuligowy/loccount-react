@@ -8,7 +8,8 @@ import {
   TableRow,
   TableRowColumn
 } from "material-ui/Table";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import _ from "lodash";
+import Pagination from 'material-ui-pagination';
 
 const styles = {
   propContainer: {
@@ -28,27 +29,50 @@ export default class LoccountTable extends React.Component {
     stripedRows: true,
     showRowHover: false,
     selectable: true,
-    multiSelectable: false,
+    multiSelectable: true,
     enableSelectAll: false,
     deselectOnClickaway: true,
     showCheckboxes: true,
     height: "300px",
-    tableData: {}
+    tableData: {},
+    onRowSelected: (selectedRows) => {
+        console.log(selectedRows)
+        //this.props.tableRowSelected(selectedRows);
+    }
   };
 
-  componentDidMount() {
-    this.props.fetchLoccountEntriesWhenNeeded();
+  generateQuery(number){
+    var   params = {};
+    params.page = number;
+    params.loccounts = this.props.loccounts;
+    return params;
   }
+
+  componentDidMount() {
+    this.props.fetchLoccountEntriesWhenNeeded(this.generateQuery());
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    console.log('componentDidUpdate');
+    if(!_.isEqual(prevProps.loccounts,this.props.loccounts)){
+       console.log('\tupdated');
+       console.log(this.props.loccounts);
+       console.log(prevProps.loccounts);
+       this.props.fetchLoccountEntriesWhenNeeded(this.generateQuery());
+    }
+  }
+
 
   render() {
     return (
-      <MuiThemeProvider>
+      <div>
         <Table
           height={this.state.height}
           fixedHeader={this.state.fixedHeader}
           fixedFooter={this.state.fixedFooter}
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}
+          onRowSelection = {this.props.tableRowSelected}
         >
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
@@ -56,29 +80,15 @@ export default class LoccountTable extends React.Component {
             enableSelectAll={this.state.enableSelectAll}
           >
             <TableRow>
-              <TableHeaderColumn
-                colSpan="7"
-                tooltip="Super Header"
-                style={{
-                  textAlign: "center"
-                }}
-              >
-                Super Header
-              </TableHeaderColumn>
-            </TableRow>
-            <TableRow>
               <TableHeaderColumn tooltip="Idx">idx</TableHeaderColumn>
               <TableHeaderColumn tooltip="Loccount">Loccount</TableHeaderColumn>
               <TableHeaderColumn tooltip="L.P">lp</TableHeaderColumn>
               <TableHeaderColumn tooltip="Title">Title</TableHeaderColumn>
               <TableHeaderColumn tooltip="txDate">txDate</TableHeaderColumn>
               <TableHeaderColumn tooltip="Amount">Amount</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Difference">
-                Difference
-              </TableHeaderColumn>
+              <TableHeaderColumn tooltip="Difference">Difference</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-
           <TableBody
             displayRowCheckbox={this.state.showCheckboxes}
             deselectOnClickaway={this.state.deselectOnClickaway}
@@ -100,17 +110,22 @@ export default class LoccountTable extends React.Component {
           <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
             <TableRow>
               <TableRowColumn
-                colSpan="6"
+                colSpan="7"
                 style={{
                   textAlign: "center"
                 }}
               >
-                Super Footer
               </TableRowColumn>
             </TableRow>
           </TableFooter>
         </Table>
-      </MuiThemeProvider>
+        <Pagination
+          total = { this.props.loccountEntries.data.pagesTotal}
+          current = { this.props.loccountEntries.data.pageCurrent }
+          display = { this.props.loccountEntries.data.pagesTotal }
+          onChange = { number => this.props.fetchLoccountEntriesWhenNeeded(this.generateQuery(number)) }
+        />
+        </div>
     );
   }
 }

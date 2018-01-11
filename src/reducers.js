@@ -7,7 +7,8 @@ import {
   LOCCOUNT_SELECTED,
   FETCHED_LOCCOUNTS_REQUEST,
   FETCHED_LOCCOUNTS_REQUEST_SUCCESS,
-  FETCHED_LOCCOUNTS_REQUEST_FAILED
+  FETCHED_LOCCOUNTS_REQUEST_FAILED,
+  LOCOUNT_ENTRY_ROW_SELECETED
 } from "./actions";
 
 function loccountEntries(
@@ -41,6 +42,8 @@ function loccountEntries(
         isFetching: false
         // }
       });
+    case LOCOUNT_ENTRY_ROW_SELECETED:
+      return state
     default:
       return state;
   }
@@ -49,7 +52,8 @@ function loccountEntries(
 function loccounts(
   state = {
     data: [],
-    isFetching: false
+    isFetching: false,
+    selectedLocountEntriesRows: []
   },
   action
 ) {
@@ -58,7 +62,8 @@ function loccounts(
       return Object.assign({}, state, {
         ...state.loccounts,
         isFetching: true,
-        data: []
+        data: [],
+        selected:[]
       });
     case FETCHED_LOCCOUNTS_REQUEST_SUCCESS:
       return Object.assign({}, state, {
@@ -78,6 +83,13 @@ function loccounts(
         isFetching: false,
         selected: [...state.selected, action.loccount]
       });
+    case LOCCOUNT_DESELECTED:
+      return Object.assign({}, state, {
+        ...state.loccounts,
+        isFetching: false,
+        selected: state.selected.filter(element => element !== action.loccount)
+      });
+
     default:
       return state;
   }

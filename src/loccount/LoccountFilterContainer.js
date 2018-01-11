@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import LoccountFilter from "./LoccountFilter";
-import { fetchLoccountsWhenNeeded, selectLoccount } from "../actions";
+import { fetchLoccountsWhenNeeded, selectLoccount,deselectLoccount } from "../actions";
 
 const mapStateToProps = state => {
   return {
@@ -14,12 +14,15 @@ const mapDispatchToProps = dispatch => {
     fetchLoccountsWhenNeeded: () => {
       dispatch(fetchLoccountsWhenNeeded());
     },
-    onClick: (evt, isChecked, loccount) => {
-      console.log(typeof this);
-      console.log(evt.target);
-      console.log("is checked " + isChecked);
+    onClick: (evt, isInputChecked, loccount) => {
+      // console.log(typeof this);
+      console.log(evt);
+       console.log("is checked " + isInputChecked);
       console.log(loccount);
-      dispatch(selectLoccount(isChecked));
+      if(isInputChecked)
+        dispatch(selectLoccount(loccount));
+        else
+        dispatch(deselectLoccount(loccount))
     }
   };
 };

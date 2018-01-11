@@ -1,17 +1,23 @@
 import { connect } from "react-redux";
 import LoccountTable from "./LoccountTable";
-import { fetchLoccountEntriesWhenNeeded } from "../actions";
+import { fetchLoccountEntriesWhenNeeded,tableRowSelected } from "../actions";
 
 const mapStateToProps = state => {
   return {
-    loccountEntries: state.loccountEntries
+    loccountEntries: state.loccountEntries,
+    loccounts: state.loccounts.selected,
+    selectedEntriesRows: state.loccounts.selectedLocountEntriesRows
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchLoccountEntriesWhenNeeded: loccounts => {
-      dispatch(fetchLoccountEntriesWhenNeeded(loccounts));
+    fetchLoccountEntriesWhenNeeded: query => {
+      dispatch(fetchLoccountEntriesWhenNeeded(query));
+    },
+    tableRowSelected: rows =>{
+      console.log(rows);
+      dispatch(tableRowSelected(rows));
     }
   };
 };

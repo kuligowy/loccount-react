@@ -6,6 +6,8 @@ import registerServiceWorker from "./registerServiceWorker";
 import { fetchLoccountEntriesWhenNeeded } from "./actions";
 import { Provider } from "react-redux";
 import configureStore from "./configureStore";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+
 const preloadedState = {
   loccountEntries: {
     isFetching: false,
@@ -33,7 +35,9 @@ store.dispatch(fetchLoccountEntriesWhenNeeded());
 
 ReactDOM.render(
   <Provider store={store}>
+  <MuiThemeProvider>
     <App />
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById("root")
 );
