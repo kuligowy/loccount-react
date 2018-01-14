@@ -4,7 +4,7 @@ import { fetchLoccountEntriesWhenNeeded,tableRowSelected } from "../actions";
 
 const mapStateToProps = state => {
   return {
-    loccountEntries: state.loccountEntries,
+    entries: state.entries,
     loccounts: state.loccounts.selected,
     selectedEntriesRows: state.loccounts.selectedLocountEntriesRows
   };

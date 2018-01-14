@@ -34,11 +34,7 @@ export default class LoccountTable extends React.Component {
     deselectOnClickaway: true,
     showCheckboxes: true,
     height: "300px",
-    tableData: {},
-    onRowSelected: (selectedRows) => {
-        console.log(selectedRows)
-        //this.props.tableRowSelected(selectedRows);
-    }
+    tableData: {}
   };
 
   generateQuery(number){
@@ -53,11 +49,7 @@ export default class LoccountTable extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    console.log('componentDidUpdate');
     if(!_.isEqual(prevProps.loccounts,this.props.loccounts)){
-       console.log('\tupdated');
-       console.log(this.props.loccounts);
-       console.log(prevProps.loccounts);
        this.props.fetchLoccountEntriesWhenNeeded(this.generateQuery());
     }
   }
@@ -95,8 +87,8 @@ export default class LoccountTable extends React.Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.loccountEntries.data.data.map((row, index) => (
-              <TableRow key={index}>
+            {this.props.entries.data.map((row, index) => (
+              <TableRow key={index} selected={row.selected}>
                 <TableRowColumn>{index}</TableRowColumn>
                 <TableRowColumn>{row.loccount}</TableRowColumn>
                 <TableRowColumn>{row.lp}</TableRowColumn>
@@ -120,9 +112,9 @@ export default class LoccountTable extends React.Component {
           </TableFooter>
         </Table>
         <Pagination
-          total = { this.props.loccountEntries.data.pagesTotal}
-          current = { this.props.loccountEntries.data.pageCurrent }
-          display = { this.props.loccountEntries.data.pagesTotal }
+          total = { this.props.entries.pagesTotal}
+          current = { this.props.entries.pageCurrent }
+          display = { this.props.entries.pagesTotal }
           onChange = { number => this.props.fetchLoccountEntriesWhenNeeded(this.generateQuery(number)) }
         />
         </div>

@@ -11,9 +11,13 @@ import {
   LOCOUNT_ENTRY_ROW_SELECETED
 } from "./actions";
 
-function loccountEntries(
+function entries(
   state = {
-    data: { data: [] },
+    data: [],
+    total:20,
+    pageCurrent:1,
+    pageSize:10,
+    pagesTotal:2,
     isFetching: false
   },
   action
@@ -21,29 +25,30 @@ function loccountEntries(
   switch (action.type) {
     case FETCHED_LOCCOUNT_ENTRIE_REQUEST:
       return Object.assign({}, state, {
-        // loccountEntries: {
-        ...state.loccountEntries,
-        isFetching: true,
-        data: { data: [] }
-        // }
+        ...state, isFetching: true
       });
     case FETCHED_LOCCOUNT_ENTRIE_REQUEST_SUCCESS:
       return Object.assign({}, state, {
-        //loccountEntries: {
-        ...state.loccountEntries,
-        isFetching: false,
-        data: action.loccountEntries
-        //}
+        ...state, isFetching: false,
+        data: action.loccountEntries.data,
+        total:action.loccountEntries.total,
+        pageCurrent:action.loccountEntries.pageCurrent,
+        pageSize:action.loccountEntries.pageSize,
+        pagesTotal:action.loccountEntries.pagesTotal,
+        isFetching: false
       });
     case FETCHED_LOCCOUNT_ENTRIE_REQUEST_FAILED:
       return Object.assign({}, state, {
-        // loccountEntries: {
-        ...state.loccountEntries,
-        isFetching: false
-        // }
+        ...state, isFetching: false
       });
     case LOCOUNT_ENTRY_ROW_SELECETED:
-      return state
+    return Object.assign({}, state, {
+      ...state,
+      data: state.data.map((entry,idx)=>
+        //TODO: wtf ? {...entry, selected: (action.row.includes(idx))})
+        (action.row.includes(idx)) ? {...entry, selected: true} : {...entry, selected: false}
+      )
+    });
     default:
       return state;
   }
@@ -96,7 +101,7 @@ function loccounts(
 }
 
 const loccountApp = combineReducers({
-  loccountEntries,
+  entries,
   loccounts
 });
 
